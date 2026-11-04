@@ -3,7 +3,7 @@ const { getPrefix } = global.utils;
 const { commands, aliases } = global.GoatBot;
 
 const mediaUrls = [
-  "https://i.imgur.com/OrRKAkP.gif"
+  "https://i.imgur.com/JYHtlmw.gif"
 ];
 
 module.exports = {

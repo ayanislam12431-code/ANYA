@@ -3,116 +3,139 @@ const { getPrefix } = global.utils;
 const { commands, aliases } = global.GoatBot;
 
 const mediaUrls = [
-  "", "", ""
+  "https://i.imgur.com/OrRKAkP.gif"
 ];
 
 module.exports = {
   config: {
     name: "help",
-    aliases: ["use"],
-    version: "1.25",
-    author: "Ayanokōji",
+    aliases: ["menu", "use", "cmd"],
+    version: "3.0",
+    author: "Ayan Islam",
     countDown: 5,
     role: 0,
-    shortDescription: { en: "Explore command usage 📖" },
-    longDescription: { en: "View detailed command usage, list commands by page, or filter by category ✨" },
-    category: "info",
-    guide: {
-      en: "🔹 {pn} [pageNumber]\n🔹 {pn} [commandName]\n🔹 {pn} -c <categoryName>"
+
+    shortDescription: {
+      en: "👑 Premium Command Center"
     },
-    priority: 1,
+
+    longDescription: {
+      en: "Luxury dark themed command menu with advanced search and category navigation."
+    },
+
+    category: "system",
+
+    guide: {
+      en: "{pn}\n{pn} [page]\n{pn} [command]\n{pn} -c [category]"
+    },
+
+    priority: 1
   },
 
-  onStart: async function ({ message, args, event, threadsData }) {
+  onStart: async function ({ message, args, event }) {
     try {
-      const { threadID } = event;
-      const prefix = getPrefix(threadID) || "!";
+      const prefix = getPrefix(event.threadID) || "!";
 
       const getAttachment = async () => {
         try {
-          const randomUrl = mediaUrls[Math.floor(Math.random() * mediaUrls.length)];
-          if (!randomUrl) return null;
-          const response = await axios.get(randomUrl, { responseType: "stream" });
+          const validUrls = mediaUrls.filter(Boolean);
+
+          if (!validUrls.length) return null;
+
+          const randomUrl =
+            validUrls[Math.floor(Math.random() * validUrls.length)];
+
+          const response = await axios.get(randomUrl, {
+            responseType: "stream",
+            timeout: 15000
+          });
+
           return response.data;
         } catch (error) {
-          console.warn("Failed to fetch media:", error.message);
+          console.error("GIF Error:", error.message);
           return null;
         }
       };
 
-      // PAGE VIEW
-      if (args.length === 0 || !isNaN(args[0])) {
+      const brand = `
+╭━━━━━━━━━━━━━━━━━━━━━━╮
+┃   👑 𝐀𝐘𝐀𝐍 𝐈𝐒𝐋𝐀𝐌 👑
+┃   𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐁𝐎𝐓 𝐒𝐘𝐒𝐓𝐄𝐌
+╰━━━━━━━━━━━━━━━━━━━━━━╯`;
+
+      // MAIN HELP MENU
+      if (!args.length || !isNaN(args[0])) {
         const categories = {};
-        const commandList = [];
 
-        for (const [name, value] of commands) {
-          const category = value.config.category?.toLowerCase() || "uncategorized";
-          if (!categories[category]) categories[category] = [];
+        for (const [name, cmd] of commands) {
+          const category =
+            (cmd.config.category || "uncategorized").toLowerCase();
+
+          if (!categories[category]) {
+            categories[category] = [];
+          }
+
           categories[category].push(name);
-          commandList.push(name);
         }
 
-        const totalCommands = commandList.length;
-        Object.keys(categories).forEach(cat => {
-          categories[cat].sort((a, b) => a.localeCompare(b));
-        });
-
-        const sortedCategories = Object.keys(categories).sort();
-        const page = parseInt(args[0]) || 1;
-        const itemsPerPage = 10;
-        const totalPages = Math.ceil(sortedCategories.length / itemsPerPage);
-
-        if (page < 1 || page > totalPages)
-          return message.reply(`🚫 Invalid page! Please choose between 1 and ${totalPages}.`);
-
-        const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const pagedCategories = sortedCategories.slice(start, end);
-
-        let msg = `✨ [ Guide For Beginners - Page ${page} ] ✨\n\n`;
-        for (const category of pagedCategories) {
-          const cmds = categories[category];
-          const title = category.toUpperCase();
-          msg += `╒══════[ ${title} ]\n`;
-          msg += `╞》 ${cmds.join(" ♡ ")}\n`;
-          msg += `╘══════════════════╛\n`;
-        }
-
-        msg += `\n╭‣『 SHADOWX BOT 』\n`;
-        msg += `╰‣ Total commands: ${totalCommands}\n`;
-        msg += `╭‣ Page ${page} of ${totalPages}\n`;
-        msg += `╰‣ A Personal Facebook Bot\n`;
-        msg += `╭‣ ADMIN: Mueid Mursalin Rifat\n`;
-        msg += `╰‣ To see usage of a command, type: ${prefix}help [commandName]`;
-
-        return message.reply({
-          body: msg,
-          attachment: await getAttachment()
-        });
-      }
-
-      // CATEGORY FILTER -c <category>
-      if (args[0].toLowerCase() === "-c") {
-        if (!args[1]) return message.reply("🚫 Please specify a category!");
-        const categoryName = args[1].toLowerCase();
-        const filteredCommands = Array.from(commands.values()).filter(
-          (cmd) => (cmd.config.category?.toLowerCase() === categoryName)
+        const categoryList = Object.keys(categories).sort();
+        const itemsPerPage = 8;
+        const totalPages = Math.max(
+          1,
+          Math.ceil(categoryList.length / itemsPerPage)
         );
 
-        if (filteredCommands.length === 0)
-          return message.reply(`🚫 No commands found in "${categoryName}" category.`);
+        const page = parseInt(args[0]) || 1;
 
-        const cmdNames = filteredCommands.map(cmd => cmd.config.name).sort((a, b) => a.localeCompare(b));
-        const title = categoryName.toUpperCase();
+        if (page < 1 || page > totalPages) {
+          return message.reply(
+            `╭─ ⚠️ INVALID PAGE\n┃ Available: 1 - ${totalPages}\n╰━━━━━━━━━━━━━━━━━━`
+          );
+        }
 
-        let msg = `✨ [ ${title} Commands ] ✨\n\n`;
-        msg += `╒══════[ ${title} ]\n`;
-        msg += `╞》 ${cmdNames.join(" ♡ ")}\n`;
-        msg += `╘══════════════════╛\n`;
-        msg += `\n╭‣『 SHADOWX BOT 』\n`;
-        msg += `╰‣  Total commands in this category: ${cmdNames.length}\n`;
-        msg += `╭‣ A Personal Facebook Bot\n`;
-        msg += `╰‣  ADMIN: Mueid Mursalin Rifat`;
+        const currentCategories = categoryList.slice(
+          (page - 1) * itemsPerPage,
+          page * itemsPerPage
+        );
+
+        let msg = `${brand}
+
+╭━━━『 ✦ 𝐇𝐄𝐋𝐏 𝐌𝐄𝐍𝐔 ✦ 』
+┃
+┃ ✧ Total Commands: ${commands.size}
+┃ ✧ Categories: ${categoryList.length}
+┃ ✧ Current Page: ${page}/${totalPages}
+┃ ✧ Bot Prefix: ${prefix}
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+
+`;
+
+        for (const category of currentCategories) {
+          const names = categories[category].sort();
+
+          msg += `╭━━『 ${category.toUpperCase()} 』
+┃
+┃ ✦ ${names.join(" ⟡ ")}
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+
+`;
+        }
+
+        msg += `╭━━━『 📖 𝐔𝐒𝐀𝐆𝐄 』
+┃
+┃ ✧ ${prefix}help
+┃ ✧ ${prefix}help 2
+┃ ✧ ${prefix}help command
+┃ ✧ ${prefix}help -c info
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+
+╭━━━『 👑 𝐎𝐖𝐍𝐄𝐑 』
+┃ ✦ Ayan Islam
+┃ ✦ Premium Messenger Bot
+╰━━━━━━━━━━━━━━━━━━━━━━╯`;
 
         return message.reply({
           body: msg,
@@ -120,36 +143,121 @@ module.exports = {
         });
       }
 
-      // INDIVIDUAL COMMAND
+      // CATEGORY SEARCH
+      if (args[0].toLowerCase() === "-c") {
+        const categoryName = args.slice(1).join(" ").toLowerCase();
+
+        if (!categoryName) {
+          return message.reply(
+            `⚠️ Enter a category name!\nExample: ${prefix}help -c info`
+          );
+        }
+
+        const filtered = Array.from(commands.values()).filter(cmd =>
+          (cmd.config.category || "uncategorized").toLowerCase() === categoryName
+        );
+
+        if (!filtered.length) {
+          return message.reply(
+            `╭─ ❌ CATEGORY NOT FOUND\n┃ ${categoryName}\n╰━━━━━━━━━━━━━━━━━━`
+          );
+        }
+
+        const names = filtered
+          .map(cmd => cmd.config.name)
+          .sort();
+
+        let msg = `${brand}
+
+╭━━『 ✦ ${categoryName.toUpperCase()} ✦ 』
+┃
+┃ Total Commands: ${names.length}
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+
+`;
+
+        names.forEach((name, index) => {
+          msg += `┃ ${String(index + 1).padStart(2, "0")} ⟡ ${name}\n`;
+        });
+
+        msg += `
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+
+${brand}`;
+
+        return message.reply({
+          body: msg,
+          attachment: await getAttachment()
+        });
+      }
+
+      // COMMAND INFORMATION
       const commandName = args[0].toLowerCase();
-      const command = commands.get(commandName) || commands.get(aliases.get(commandName));
 
-      if (!command)
-        return message.reply(`🚫 Command "${commandName}" not found.`);
+      const aliasTarget = aliases.get(commandName);
 
-      const configCommand = command.config;
-      const author = configCommand.author || "Unknown";
-      const longDescription = configCommand.longDescription?.en || "No description";
-      const guideBody = configCommand.guide?.en || "No guide available.";
-      const usage = guideBody.replace(/{pn}/g, prefix).replace(/{n}/g, configCommand.name);
+      const command =
+        commands.get(commandName) ||
+        (aliasTarget ? commands.get(aliasTarget) : null);
 
-      let msg = `✨ [ Command: ${configCommand.name.toUpperCase()} ] ✨\n\n`;
-      msg += `╭─── 📜 Details ───\n` +
-        `╞ 🔹 Name: ${configCommand.name}\n` +
-        `╞ 📝 Description: ${longDescription}\n` +
-        `╞ 🌐 Aliases: ${configCommand.aliases ? configCommand.aliases.join(", ") : "None"}\n` +
-        `╞ 🛠 Version: ${configCommand.version || "1.0"}\n` +
-        `╞ ⏳ Cooldown: ${configCommand.countDown || 1}s\n` +
-        `╞ ✍ Author: ${author}\n` +
-        `╰───────────────◊\n` +
-        `╭─── 📚 Usage ───\n` +
-        `╞ ${usage}\n` +
-        `╰───────────────◊\n` +
-        `╰───────────────◊\n` +
-        `╭‣『 SHADOWX BOT 』\n` +
-        `╰‣ Total commands: ${commands.size}\n` +
-        `╭‣ A Personal Facebook Bot\n` +
-        `╰‣ ADMIN: Mueid Mursalin Rifat`;
+      if (!command) {
+        return message.reply(
+          `╭━━『 ❌ NOT FOUND 』
+┃ Command: ${commandName}
+┃
+┃ Use ${prefix}help
+╰━━━━━━━━━━━━━━━━━━━━━━╯`
+        );
+      }
+
+      const cfg = command.config;
+
+      const description =
+        cfg.longDescription?.en ||
+        cfg.shortDescription?.en ||
+        "No description available.";
+
+      const guide = cfg.guide?.en || "No guide available.";
+
+      const usage = guide
+        .replace(/{pn}/g, prefix)
+        .replace(/{n}/g, cfg.name);
+
+      let msg = `${brand}
+
+╭━━『 ✦ 𝐂𝐎𝐌𝐌𝐀𝐍𝐃 𝐈𝐍𝐅𝐎 ✦ 』
+┃
+┃ 👑 Name: ${cfg.name}
+┃ ✍ Author: ${cfg.author || "Unknown"}
+┃ 📦 Version: ${cfg.version || "1.0"}
+┃ 📂 Category: ${cfg.category || "Uncategorized"}
+┃ ⏳ Cooldown: ${cfg.countDown || 1}s
+┃ 🔐 Permission: ${cfg.role ?? 0}
+┃ 🔗 Aliases: ${(cfg.aliases || []).join(", ") || "None"}
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+
+╭━━『 📝 DESCRIPTION 』
+┃
+┃ ${description}
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+
+╭━━『 📚 COMMAND USAGE 』
+┃
+┃ ${usage}
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+
+╭━━『 💎 BOT STATISTICS 』
+┃
+┃ Total Commands: ${commands.size}
+┃ Owner: Ayan Islam
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+
+${brand}`;
 
       return message.reply({
         body: msg,
@@ -157,8 +265,11 @@ module.exports = {
       });
 
     } catch (error) {
-      console.error("Help command error:", error);
-      await message.reply("⚠ An error occurred. Please try again later.");
+      console.error("Help Command Error:", error);
+
+      return message.reply(
+        "╭━━『 ⚠️ SYSTEM ERROR 』\n┃ Help menu failed to load.\n┃ Please try again later.\n╰━━━━━━━━━━━━━━━━━━╯"
+      );
     }
-  },
+  }
 };

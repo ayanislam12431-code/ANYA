@@ -24,18 +24,18 @@
     "enable": false
   },
   "adminBot": [
-    "100004924009085",
-    "100068594614204",
-    "61584137781788",
-    "61586382867093"
+    "61591247504246",
+    "61591247504246",
+    "61591247504246",
+    "61591247504246"
   ],
   "devUsers": [
-    "100004924009085",
+    "61591247504246",
     "100068594614204",
     "61584137781788"
   ],
   "premiumUsers": [
-    "100004924009085",
+    "61591247504246",
     "100068594614204",
     "61584137781788"
   ],
@@ -66,8 +66,8 @@
       "1479539013096451"
     ]
   },
-  "nickNameBot": "Eshita🎀",
-  "prefix": ".",
+  "nickNameBot": "ANYA🎀",
+  "prefix": "!",
   "usePrefix": {
     "enable": true,
     "notes": "if enable is set to false, NO ONE needs a prefix to use commands (global no-prefix mode). Leave this true and use adminUsePrefix below instead for admin-only no-prefix.",

@@ -4,57 +4,148 @@ const { utils } = global;
 module.exports = {
 	config: {
 		name: "prefix",
-		version: "1.6",
-		author: "Mueid Mursalin Rifat",
+		version: "2.0",
+		author: "Ayan Islam",
 		countDown: 5,
 		role: 0,
-		description: "ᴄʜᴀɴɢᴇ ᴛʜᴇ ʙᴏᴛ'ꜱ ᴘʀᴇꜰɪx ɪɴ ʏᴏᴜʀ ᴄʜᴀᴛ ᴏʀ ɢʟᴏʙᴀʟʟʏ (ᴀᴅᴍɪɴ ᴏɴʟʏ)",
-		category: "ᴄᴏɴꜰɪɢ",
+		description: "Premium Prefix Management System",
+		category: "System",
 		guide: {
 			en:
-				"🔸 {pn} <ɴᴇᴡ ᴘʀᴇꜰɪx>\n" +
-				"   ╰─ ᴄʜᴀɴɢᴇ ᴘʀᴇꜰɪx ꜰᴏʀ ʏᴏᴜʀ ɢʀᴏᴜᴘ\n" +
-				"   ┗─ ᴇxᴀᴍᴘʟᴇ: {pn} #\n\n" +
-				"🔸 {pn} <ɴᴇᴡ ᴘʀᴇꜰɪx> -ɢ\n" +
-				"   ╰─ ᴄʜᴀɴɢᴇ ɢʟᴏʙᴀʟ ᴘʀᴇꜰɪx (ᴀᴅᴍɪɴ ᴏɴʟʏ)\n" +
-				"   ┗─ ᴇxᴀᴍᴘʟᴇ: {pn} ! -ɢ\n\n" +
-				"🔸 {pn} ʀᴇꜱᴇᴛ\n" +
-				"   ╰─ ʀᴇꜱᴇᴛ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴘʀᴇꜰɪx ᴛᴏ ᴅᴇꜰᴀᴜʟᴛ"
+				"╭───『 ✦ PREFIX MENU ✦ 』\n" +
+				"│\n" +
+				"├─ {pn} <prefix>\n" +
+				"│  └─ Change group prefix\n" +
+				"│\n" +
+				"├─ {pn} <prefix> -g\n" +
+				"│  └─ Change global prefix (Admin)\n" +
+				"│\n" +
+				"├─ {pn} reset\n" +
+				"│  └─ Reset group prefix\n" +
+				"│\n" +
+				"├─ prefix\n" +
+				"│  └─ Show prefix information\n" +
+				"│\n" +
+				"╰───『 Ayan Islam 』"
 		}
 	},
 
 	langs: {
 		en: {
-			reset: "✅ ʏᴏᴜʀ ᴘʀᴇꜰɪx ʜᴀꜱ ʙᴇᴇɴ ʀᴇꜱᴇᴛ ᴛᴏ ᴛʜᴇ ᴅᴇꜰᴀᴜʟᴛ: %1",
-			onlyAdmin: "⚠️ ᴏɴʟʏ ʙᴏᴛ ᴀᴅᴍɪɴꜱ ᴄᴀɴ ᴄʜᴀɴɢᴇ ᴛʜᴇ ɢʟᴏʙᴀʟ ᴘʀᴇꜰɪx",
-			confirmGlobal: "⚠️ ᴘʟᴇᴀꜱᴇ ʀᴇᴀᴄᴛ ᴛᴏ ᴛʜɪꜱ ᴍᴇꜱꜱᴀɢᴇ ᴛᴏ ᴄᴏɴꜰɪʀᴍ ᴄʜᴀɴɢɪɴɢ ᴛʜᴇ *ɢʟᴏʙᴀʟ ᴘʀᴇꜰɪx* ᴛᴏ: %1",
-			confirmThisThread: "⚠️ ᴘʟᴇᴀꜱᴇ ʀᴇᴀᴄᴛ ᴛᴏ ᴛʜɪꜱ ᴍᴇꜱꜱᴀɢᴇ ᴛᴏ ᴄᴏɴꜰɪʀᴍ ᴄʜᴀɴɢɪɴɢ ᴛʜᴇ *ɢʀᴏᴜᴘ ᴘʀᴇꜰɪx* ᴛᴏ: %1",
-			successGlobal: "✅ ɢʟᴏʙᴀʟ ᴘʀᴇꜰɪx ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ ᴄʜᴀɴɢᴇᴅ ᴛᴏ: %1",
-			successThisThread: "✅ ɢʀᴏᴜᴘ ᴘʀᴇꜰɪx ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ ᴄʜᴀɴɢᴇᴅ ᴛᴏ: %1",
+			reset:
+				"╭━━━『 ✦ PREFIX RESET ✦ 』\n" +
+				"│\n" +
+				"├ ✅ Group prefix reset successfully!\n" +
+				"├ ✦ Default Prefix: %1\n" +
+				"│\n" +
+				"╰━━━『 Ayan Islam 』",
+
+			onlyAdmin:
+				"╭━━━『 ⚠️ ACCESS DENIED 』\n" +
+				"│\n" +
+				"├ Only Bot Admins can change\n" +
+				"├ the Global Prefix.\n" +
+				"│\n" +
+				"╰━━━『 Ayan Islam 』",
+
+			confirmGlobal:
+				"╭━━━『 🌐 GLOBAL PREFIX 』\n" +
+				"│\n" +
+				"├ New Prefix: %1\n" +
+				"├ React to confirm this change.\n" +
+				"│\n" +
+				"╰━━━『 Ayan Islam 』",
+
+			confirmThisThread:
+				"╭━━━『 🛸 GROUP PREFIX 』\n" +
+				"│\n" +
+				"├ New Prefix: %1\n" +
+				"├ React to confirm this change.\n" +
+				"│\n" +
+				"╰━━━『 Ayan Islam 』",
+
+			successGlobal:
+				"╭━━━『 ✅ GLOBAL UPDATED 』\n" +
+				"│\n" +
+				"├ Global Prefix: %1\n" +
+				"├ Status: Successfully Changed\n" +
+				"│\n" +
+				"╰━━━『 Ayan Islam 』",
+
+			successThisThread:
+				"╭━━━『 ✅ GROUP UPDATED 』\n" +
+				"│\n" +
+				"├ Group Prefix: %1\n" +
+				"├ Status: Successfully Changed\n" +
+				"│\n" +
+				"╰━━━『 Ayan Islam 』",
+
 			myPrefix:
-				"📊 ᴘʀᴇꜰɪx ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ\n" +
-				"├─ 🌐 ɢʟᴏʙᴀʟ ᴘʀᴇꜰɪx: `%1`\n" +
-				"└─ 🛸 ɢʀᴏᴜᴘ ᴘʀᴇꜰɪx: `%2`\n\n" +
-				"🔗 ʟɪɴᴋꜱ & ꜱᴜᴘᴘᴏʀᴛ\n" +
-				"├─ ✅ ᴜꜱᴇ `.supportgc` ᴛᴏ ᴊᴏɪɴ ᴛʜᴇ ᴏꜰꜰɪᴄɪᴀʟ ꜱᴜᴘᴘᴏʀᴛ ɢʀᴏᴜᴘ\n" +
-				"└─ 🎀 ᴄᴏɴɴᴇᴄᴛ ᴡɪᴛʜ ᴛʜᴇ ᴅᴇᴠᴇʟᴏᴘᴇʀ: https://www.facebook.com/mueid.mursalin.rifat1"
+				"╭━━━『 ✦ PREFIX INFORMATION ✦ 』\n" +
+				"│\n" +
+				"├ 🌐 Global Prefix: %1\n" +
+				"├ 🛸 Group Prefix: %2\n" +
+				"│\n" +
+				"├ 👑 Developer: Ayan Islam\n" +
+				"├ ⚡ Bot Status: Online\n" +
+				"│\n" +
+				"╰━━━『 REM X ST 』"
 		}
 	},
 
-	onStart: async function ({ message, role, args, commandName, event, threadsData, getLang }) {
-		if (!args[0]) return message.SyntaxError();
+	onStart: async function ({
+		message,
+		role,
+		args,
+		commandName,
+		event,
+		threadsData,
+		getLang
+	}) {
+		if (!args[0]) {
+			return message.SyntaxError();
+		}
 
-		if (args[0].toLowerCase() === "reset") {
-			await threadsData.set(event.threadID, null, "data.prefix");
-			console.log(`🔄 ᴘʀᴇꜰɪx ʀᴇꜱᴇᴛ ɪɴ ᴛʜʀᴇᴀᴅ ${event.threadID}`);
-			return message.reply(getLang("reset", global.GoatBot.config.prefix));
+		const input = args[0].toLowerCase();
+
+		// Reset Group Prefix
+		if (input === "reset") {
+			await threadsData.set(
+				event.threadID,
+				null,
+				"data.prefix"
+			);
+
+			console.log(
+				`[PREFIX] Group reset | Thread: ${event.threadID}`
+			);
+
+			return message.reply(
+				getLang("reset", global.GoatBot.config.prefix)
+			);
 		}
 
 		const newPrefix = args[0];
-		const setGlobal = args[1]?.toLowerCase() === "-ɢ" || args[1]?.toLowerCase() === "-g";
 
+		if (
+			newPrefix.length > 10 ||
+			/\s/.test(newPrefix)
+		) {
+			return message.reply(
+				"⚠️ Prefix must be 1-10 characters without spaces."
+			);
+		}
+
+		const setGlobal =
+			args[1]?.toLowerCase() === "-g" ||
+			args[1]?.toLowerCase() === "-ɢ";
+
+		// Admin Security
 		if (setGlobal && role < 2) {
-			console.log(`🚫 ᴜɴᴀᴜᴛʜᴏʀɪᴢᴇᴅ ɢʟᴏʙᴀʟ ᴘʀᴇꜰɪx ᴄʜᴀɴɢᴇ ᴀᴛᴛᴇᴍᴘᴛ ʙʏ ${event.senderID}`);
+			console.log(
+				`[PREFIX] Unauthorized global change | User: ${event.senderID}`
+			);
+
 			return message.reply(getLang("onlyAdmin"));
 		}
 
@@ -69,38 +160,104 @@ module.exports = {
 			setGlobal
 		};
 
-		console.log(`🔧 ᴘʀᴇꜰɪx ᴄʜᴀɴɢᴇ ʀᴇQᴜᴇꜱᴛ: ${newPrefix} (${setGlobal ? 'ɢʟᴏʙᴀʟ' : 'ɢʀᴏᴜᴘ'}) ʙʏ ${event.senderID}`);
+		console.log(
+			`[PREFIX] Change request | Prefix: ${newPrefix} | Type: ${
+				setGlobal ? "Global" : "Group"
+			}`
+		);
 
-		return message.reply(confirmationMsg, (err, info) => {
-			if (err) return;
-			formSet.messageID = info.messageID;
-			global.GoatBot.onReaction.set(info.messageID, formSet);
-		});
+		return message.reply(
+			confirmationMsg,
+			(err, info) => {
+				if (err) return;
+
+				formSet.messageID = info.messageID;
+
+				global.GoatBot.onReaction.set(
+					info.messageID,
+					formSet
+				);
+			}
+		);
 	},
 
-	onReaction: async function ({ message, threadsData, event, Reaction, getLang }) {
-		const { author, newPrefix, setGlobal } = Reaction;
+	onReaction: async function ({
+		message,
+		threadsData,
+		event,
+		Reaction,
+		getLang
+	}) {
+		const {
+			author,
+			newPrefix,
+			setGlobal
+		} = Reaction;
+
+		// Only the requester can confirm
 		if (event.userID !== author) return;
 
 		if (setGlobal) {
 			global.GoatBot.config.prefix = newPrefix;
-			fs.writeFileSync(global.client.dirConfig, JSON.stringify(global.GoatBot.config, null, 2));
-			console.log(`🌐 ɢʟᴏʙᴀʟ ᴘʀᴇꜰɪx ᴄʜᴀɴɢᴇᴅ ᴛᴏ: ${newPrefix} ʙʏ ${author}`);
-			return message.reply(getLang("successGlobal", newPrefix));
-		} else {
-			await threadsData.set(event.threadID, newPrefix, "data.prefix");
-			console.log(`🛸 ɢʀᴏᴜᴘ ᴘʀᴇꜰɪx ᴄʜᴀɴɢᴇᴅ ᴛᴏ: ${newPrefix} ɪɴ ᴛʜʀᴇᴀᴅ ${event.threadID} ʙʏ ${author}`);
-			return message.reply(getLang("successThisThread", newPrefix));
+
+			fs.writeFileSync(
+				global.client.dirConfig,
+				JSON.stringify(
+					global.GoatBot.config,
+					null,
+					2
+				)
+			);
+
+			console.log(
+				`[PREFIX] Global changed | Prefix: ${newPrefix}`
+			);
+
+			return message.reply(
+				getLang("successGlobal", newPrefix)
+			);
 		}
+
+		await threadsData.set(
+			event.threadID,
+			newPrefix,
+			"data.prefix"
+		);
+
+		console.log(
+			`[PREFIX] Group changed | Thread: ${event.threadID} | Prefix: ${newPrefix}`
+		);
+
+		return message.reply(
+			getLang("successThisThread", newPrefix)
+		);
 	},
 
-	onChat: async function ({ event, message, getLang }) {
-		if (event.body && event.body.toLowerCase() === "prefix") {
-			const threadPrefix = utils.getPrefix(event.threadID);
-			console.log(`ℹ️ ᴘʀᴇꜰɪx ɪɴꜰᴏ ʀᴇQᴜᴇꜱᴛᴇᴅ ɪɴ ᴛʜʀᴇᴀᴅ ${event.threadID}`);
-			return () => message.reply(
-				getLang("myPrefix", global.GoatBot.config.prefix, threadPrefix)
+	onChat: async function ({
+		event,
+		message,
+		getLang
+	}) {
+		if (
+			event.body &&
+			event.body.trim().toLowerCase() === "prefix"
+		) {
+			const threadPrefix = utils.getPrefix(
+				event.threadID
 			);
+
+			console.log(
+				`[PREFIX] Information requested | Thread: ${event.threadID}`
+			);
+
+			return () =>
+				message.reply(
+					getLang(
+						"myPrefix",
+						global.GoatBot.config.prefix,
+						threadPrefix
+					)
+				);
 		}
 	}
 };
